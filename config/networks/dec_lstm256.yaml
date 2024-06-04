@@ -1,0 +1,12 @@
+netS:
+  _target_: networks.base.EncoderDecoderAttentionSegmentor
+  decoder_class:
+    _target_: hydra.utils.get_class
+    path: networks.factory.LSTM
+  decoder_cfg:
+    input_size: 256
+    hidden_size: 128
+    num_layers: 1
+    dropout: 0
+    bidirectional: true
+    batch_first: true

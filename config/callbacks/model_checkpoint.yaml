@@ -1,0 +1,12 @@
+model_checkpoint:
+  _target_: lightning.pytorch.callbacks.ModelCheckpoint
+  dirpath: ${paths.output_dir}/checkpoint
+  every_n_epochs: null
+  every_n_train_steps: null
+  filename: epoch={epoch}_step={step}
+  save_weights_only: False
+  auto_insert_metric_name: False
+  save_top_k: -1
+  monitor: null
+  mode: max
+  save_last: null

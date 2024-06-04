@@ -1,0 +1,10 @@
+defaults:
+  - _self_
+
+wandb:
+  _target_: lightning.pytorch.loggers.WandbLogger
+  save_dir: ${paths.output_dir}
+  project: psg
+  name: null
+  entity: null
+  reinit: true

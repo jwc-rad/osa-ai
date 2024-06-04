@@ -1,0 +1,11 @@
+netS:
+  _target_: networks.base.EncoderDecoderAttentionSegmentor
+  attention_class:
+    _target_: hydra.utils.get_class
+    path: networks.transformer.TransformerEncoder  
+  attention_cfg:
+    d_model: 256
+    nhead: 8
+    dim_feedforward: 1024
+    dropout: 0.1
+    num_layers: 6

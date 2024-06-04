@@ -1,0 +1,5 @@
+scheduler:
+  _target_: torch.optim.lr_scheduler.ConstantLR
+  factor: 1
+  total_iters: ${trainer.max_steps}
+interval: step

@@ -1,0 +1,110 @@
+# @package _global_
+defaults:
+  - _self_
+  - override /data: default
+  - override /data/dataset: 2311_clsHA_2ch_v0
+  - override /model:
+    - segmentation_base
+    - loss_dicefocal
+  - override /networks:
+    - enc_cnn256
+    - attn_trans256
+    - seg_mlp256x128
+  - override /scheduler: epoch_initial
+  - override /optimizer: adam
+  - override /callbacks:
+    - learning_rate_monitor
+    - model_checkpoint
+
+hydra:
+  job:
+    name: ${task_name}
+  output_subdir: config
+  run:
+    dir: runs/${hydra.job.name}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+  sweep:
+    dir: runs/${hydra.job.name}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+    subdir: ${hydra.job.override_dirname}
+
+logger:
+  wandb:
+    project: psgradar-seg
+
+task_name: psgradar-seg
+train: True
+valid: False
+test: False
+
+seed:
+  seed: 12345
+  deterministic: true
+
+trainer:
+  max_epochs: 50
+  #val_check_interval: 1
+  check_val_every_n_epoch: 1
+  log_every_n_steps: 10
+  #precision: 32
+  #detect_anomaly: true
+
+optimizer:
+  lr: 0.001
+
+callbacks:   
+  model_checkpoint:
+    every_n_epochs: 1
+    filename: best_metric__epoch={epoch:05d}_step={step:08d}_val_AHIMAE={metrics/valid_AHIMAE:.8f}_val_loss={loss/valid:.8f}
+    save_weights_only: True
+    auto_insert_metric_name: False
+    save_top_k: 1
+    monitor: metrics/valid_AHIMAE
+    mode: max
+    save_last: True
+  learning_rate_monitor:
+    logging_interval: step
+
+data:
+  dataset:
+    image_totlen: 4800
+    dataset_json: ${paths.data_root_dir}/data/230821_resample_data_v0/osa_tst_re2split_02_test.json
+    train:
+      iterations_per_epoch: 14000
+  dataloader:
+    num_workers: 4
+    batch_size: 128
+    batch_size_inference: 1
+    persistent_workers: True
+
+model:
+  _target_: model.psg_segmentation.PSGSegmentationModel
+  metrics:
+    AHIMAE__AHICor__AHIICC__EventMAE__OSAKappaLinear__AHIMAPE:
+      _target_: utils.metrics.PSGAHIMetricV3
+      include_background: false
+      best_threshold_type: ahimae
+      metric_name:
+      - ahimae
+      - ahicor
+      - ahiicc
+      - eventmae
+      - osakappalinear
+      - ahimape
+      pred_thresholds:
+        _target_: numpy.linspace
+        _args_:
+        - 0
+        - 1
+        num: 101
+      sampling_frequency: 8
+      threshold_consecutive_seconds: 10
+      postprocess: true
+  inferer:
+    _target_: utils.misc.SlidingWindowInferer
+    roi_size: ${data.dataset.image_totlen}
+    sw_batch_size: 128
+    overlap: 0.95
+    mode: constant
+    progress: false
+    preprocessing:
+      _target_: data.transforms.BatchwiseNormalizeIntensity
+      channel_wise: true

@@ -1,0 +1,19 @@
+netS:
+  _target_: networks.base.EncoderDecoderAttentionSegmentor
+  encoder_class:
+    _target_: hydra.utils.get_class
+    path: networks.cnn.stack.StackedConvBlocks
+  encoder_cfg:
+    spatial_dims: 1
+    in_channels: ${data.dataset.image_channels}
+    out_channels:
+    - 32
+    - 64
+    - 128
+    - 256
+    kernel_size: 3
+    num_convs: 2
+    stride: 2
+    pooling: max
+    norm: batch
+    act: relu

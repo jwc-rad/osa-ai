@@ -1,0 +1,27 @@
+defaults:
+  - default
+
+_target_: model.psg_segmentation.PSGDenseSegmentationModel_Metrics
+
+#multilabel: true
+
+lambda_seg: 1
+loss_seg: null
+
+metrics: null
+  #Dice:
+  #  _target_: monai.metrics.DiceMetric
+  #  include_background: false
+  #ASD:
+  #  _target_: monai.metrics.SurfaceDistanceMetric
+  #  include_background: false
+  #mIoU:
+  #  _target_: monai.metrics.ConfusionMatrixMetric
+  #  include_background: false
+  #  metric_name: threat score
+  #F1:
+  #  _target_: monai.metrics.ConfusionMatrixMetric
+  #  include_background: false
+  #  metric_name: f1
+
+inferer: null

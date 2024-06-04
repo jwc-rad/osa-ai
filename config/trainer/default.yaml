@@ -1,0 +1,21 @@
+_target_: lightning.Trainer
+
+default_root_dir: ${paths.output_dir}
+
+#min_epochs: 1 # prevents early stopping
+max_epochs: null
+max_steps: -1
+
+accelerator: gpu
+devices: 1
+
+precision: 16
+
+check_val_every_n_epoch: null
+val_check_interval: null
+
+log_every_n_steps: 10
+
+deterministic: ${seed.deterministic}
+
+detect_anomaly: false

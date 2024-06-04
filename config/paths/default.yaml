@@ -1,0 +1,2 @@
+output_dir: ${hydra:runtime.output_dir}
+data_root_dir: /home/jwchoi/workspace/psgradar/temp

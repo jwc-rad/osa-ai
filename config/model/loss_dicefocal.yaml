@@ -1,0 +1,8 @@
+loss_seg:
+  _target_: monai.losses.DiceFocalLoss
+  include_background: true
+  to_onehot_y: false
+  softmax: true
+  gamma: 2.0
+  lambda_dice: 0.5
+  lambda_focal: 0.5

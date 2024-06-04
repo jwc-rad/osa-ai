@@ -1,0 +1,11 @@
+networks: ${networks}
+
+optimizer: ${optimizer}
+
+scheduler: ${scheduler}
+
+logger: ${logger}
+
+pretrained: null
+
+train: ${train}

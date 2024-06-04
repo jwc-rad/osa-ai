@@ -1,0 +1,187 @@
+dataset_target: data.dataset.PSG_V1
+spatial_dims: 1
+image_channels: 1
+num_classes: 3
+dataset_json: ${paths.data_root_dir}/230821_resample_data_v0/osa_tst_re2split_02_test.json
+cv_fold: 0
+image_totlen: 480
+sampling_frequency: 8
+image_dir:
+  channel_1: ${paths.data_root_dir}/data/230821_resample_data_v0/AU_C_2
+  #channel_2: ${paths.data_root_dir}/data/230821_resample_data_v0/AU_B_O
+label_dir: ${paths.data_root_dir}/data/230821_resample_data_v0/Event-re-2311
+stage_dir: ${paths.data_root_dir}/data/230821_resample_data_v0/Stage
+train:
+  _target_: ${..dataset_target}
+  phase: train
+  image_dir: ${..image_dir}
+  label_dir: ${..label_dir}
+  stage_dir: ${..stage_dir}
+  dataset_json: ${..dataset_json}
+  cv_fold: ${..cv_fold}
+  iterations_per_epoch: null
+  transform:
+    load_image:
+      _target_: monai.transforms.LoadImaged
+      keys:
+      - channel_1
+      #- channel_2
+      - label
+      - label_raw
+      - stage
+      - stage_raw
+      image_only: true
+    channel_first:
+      _target_: monai.transforms.EnsureChannelFirstd
+      keys:
+      - channel_1
+      #- channel_2
+      - label
+      - label_raw
+      - stage
+      - stage_raw
+    crop:
+      _target_: monai.transforms.RandSpatialCropd
+      keys:
+      - channel_1
+      #- channel_2
+      - label
+      - label_raw
+      - stage
+      - stage_raw
+      random_size: false
+      roi_size: ${data.dataset.image_totlen}   
+    normalize:
+      _target_: monai.transforms.NormalizeIntensityd
+      keys:
+      - channel_1
+      #- channel_2
+      channel_wise: true
+    concat:
+      _target_: monai.transforms.ConcatItemsd
+      keys:
+      - channel_1    
+      #- channel_2
+      name: image
+    stage_binary:
+      _target_: monai.transforms.ForegroundMaskd
+      keys: stage
+      threshold: 0.5
+      invert: true
+    label_binary:
+      _target_: data.transforms.ConvertLabeld
+      keys: label
+      convert_dict:
+        3: 2
+        4: 2
+        5: 1
+        6: 1
+    one_hot:
+      _target_: data.transforms.OneHotLabeld
+      keys: label
+      num_classes: ${....num_classes}
+      dim: 0
+valid:
+  _target_: ${..dataset_target}
+  phase: valid
+  image_dir: ${..image_dir}
+  label_dir: ${..label_dir}
+  stage_dir: ${..stage_dir}
+  dataset_json: ${..dataset_json}
+  cv_fold: ${..cv_fold}
+  transform:
+    load_image:
+      _target_: monai.transforms.LoadImaged
+      keys:
+      - channel_1
+      #- channel_2
+      - label
+      - label_raw
+      - stage
+      - stage_raw
+      image_only: true
+    channel_first:
+      _target_: monai.transforms.EnsureChannelFirstd
+      keys:
+      - channel_1
+      #- channel_2
+      - label
+      - label_raw
+      - stage
+      - stage_raw
+    concat:
+      _target_: monai.transforms.ConcatItemsd
+      keys:
+      - channel_1 
+      #- channel_2 
+      name: image
+    stage_binary:
+      _target_: monai.transforms.ForegroundMaskd
+      keys: stage
+      threshold: 0.5
+      invert: true
+    label_binary:
+      _target_: data.transforms.ConvertLabeld
+      keys: label
+      convert_dict:
+        3: 2
+        4: 2
+        5: 1
+        6: 1
+    one_hot:
+      _target_: data.transforms.OneHotLabeld
+      keys: label
+      num_classes: ${....num_classes}
+      dim: 0
+test:
+  _target_: ${..dataset_target}
+  phase: test
+  image_dir: ${..image_dir}
+  label_dir: ${..label_dir}
+  stage_dir: ${..stage_dir}
+  dataset_json: ${..dataset_json}
+  cv_fold: ${..cv_fold}
+  transform:
+    load_image:
+      _target_: monai.transforms.LoadImaged
+      keys:
+      - channel_1
+      #- channel_2
+      - label
+      - label_raw
+      - stage
+      - stage_raw
+      image_only: true
+    channel_first:
+      _target_: monai.transforms.EnsureChannelFirstd
+      keys:
+      - channel_1
+      #- channel_2
+      - label
+      - label_raw
+      - stage
+      - stage_raw
+    concat:
+      _target_: monai.transforms.ConcatItemsd
+      keys:
+      - channel_1
+      #- channel_2  
+      name: image
+    stage_binary:
+      _target_: monai.transforms.ForegroundMaskd
+      keys: stage
+      threshold: 0.5
+      invert: true
+    label_binary:
+      _target_: data.transforms.ConvertLabeld
+      keys: label
+      convert_dict:
+        3: 2
+        4: 2
+        5: 1
+        6: 1
+    one_hot:
+      _target_: data.transforms.OneHotLabeld
+      keys: label
+      num_classes: ${....num_classes}
+      dim: 0

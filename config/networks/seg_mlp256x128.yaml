@@ -1,0 +1,15 @@
+netS:
+  _target_: networks.base.EncoderDecoderAttentionSegmentor
+  segmentor_class:
+    _target_: hydra.utils.get_class
+    path: networks.factory.MLPUpsample
+  segmentor_cfg:
+    spatial_dims: 1
+    in_channels: 256
+    out_channels: ${data.dataset.num_classes}
+    hidden_channels:
+    - 128
+    dropout: 0.5
+    act: relu
+    scale_factor: 16
+    mode: nearest
