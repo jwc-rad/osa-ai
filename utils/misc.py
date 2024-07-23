@@ -2,13 +2,14 @@ from __future__ import annotations
 
 import warnings
 from abc import ABC, abstractmethod
-from typing import Any, Callable, Dict, Mapping, Optional, Sequence, Tuple, Union, List
+from typing import Any, Callable, Dict, Iterable, Mapping, Optional, Sequence, Tuple, Union, List
 
 from hydra.utils import instantiate
 from omegaconf import DictConfig, OmegaConf
 
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
 
 from monai.data.meta_tensor import MetaTensor
 from monai.data.utils import compute_importance_map, dense_patch_slices, get_valid_patch_size

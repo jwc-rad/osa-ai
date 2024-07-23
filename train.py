@@ -12,7 +12,7 @@ import torch
 
 from monai.utils import set_determinism
 
-from mislight.utils.hydra import instantiate_list
+from utils.hydra import instantiate_list
 
 @hydra.main(version_base=None, config_path="config", config_name="train")
 def main(cfg: DictConfig):
