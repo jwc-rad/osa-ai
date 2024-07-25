@@ -66,7 +66,7 @@ callbacks:
 data:
   dataset:
     image_totlen: 4800
-    dataset_json: ${paths.data_root_dir}/data/230821_resample_data_v0/osa_tst_re2split_02_test.json
+    dataset_json: ${paths.data_root_dir}/data/split.json
     train:
       iterations_per_epoch: 14000
   dataloader:

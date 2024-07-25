@@ -1,3 +1,3 @@
 image_dir:
-  channel_1: ${paths.data_root_dir}/data/230821_resample_data_v0/Abd
-  channel_2: ${paths.data_root_dir}/data/230821_resample_data_v0/Chest
+  channel_1: ${paths.data_root_dir}/data/Abd
+  channel_2: ${paths.data_root_dir}/data/Chest
