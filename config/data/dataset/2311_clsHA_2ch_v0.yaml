@@ -2,7 +2,7 @@ dataset_target: data.dataset.PSG_V1
 spatial_dims: 1
 image_channels: 2
 num_classes: 3
-dataset_json: ${paths.data_root_dir}/230821_resample_data_v0/osa_tst_re2split_02_test.json
+dataset_json: ${paths.data_root_dir}/data/230821_resample_data_v0/osa_tst_re2split_02_test.json
 cv_fold: 0
 image_totlen: 480
 sampling_frequency: 8

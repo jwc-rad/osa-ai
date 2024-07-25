@@ -5,11 +5,29 @@ This repository contains the source code of the following paper:
 [A novel deep learning model for obstructive sleep apnea diagnosis: hybrid CNN-Transformer approach for radar-based detection of apnea-hypopnea events]()<br>
 <i>UNDER REVIEW</i>
 
+## Installation
+```shell
+conda create -n osaai python=3.9
+conda activate osaai
+
+git clone https://github.com/jwc-rad/osa-ai.git
+cd osa-ai
+pip install -r requirements.txt
+```
+This repo is based on Python 3.9 and PyTorch 2.2.2 + CUDA 11.8. You may have to change to the PyTorch version that suits your workstation.
+
 ## Usage
+
+### Data format
+Currently, all the data including PSG signals and labels are expected to be in 8Hz.
+
+The the event labels are 0 (normal), 1 (hypopnea), and 2 (apnea), and the sleep stages are 0 (wake) and 1+ (other sleep stages).
+
+The sampling frequency and labels can be changed according to custom datasets, then the config ([`config/data/dataset/2311_clsHA_2ch_v0.yaml`](config/data/dataset/2311_clsHA_2ch_v0.yaml)) should be changed also.
 
 ### Dataset format
 
-The base dataset directory `DATASET_DIR` contains label (e.g. Event) and input directories (e.g. Radar) with `{PATIENT_ID}.npy` files, and a dataset split file.
+The base dataset directory `DATASET_DIR` contains input (e.g. Radar), label (e.g. Event), and sleep stage (e.g. Stage) directories with `{PATIENT_ID}.npy` files, and a dataset split file.
 
 ```
 DATASET_DIR/
@@ -17,7 +35,15 @@ DATASET_DIR/
 │   ├── PSG_0001.npy
 │   ├── PSG_0002.npy
 │   ├── ...
-├── Radar
+├── Radar1
+│   ├── PSG_0001.npy
+│   ├── PSG_0002.npy
+│   ├── ...
+├── Radar2
+│   ├── PSG_0001.npy
+│   ├── PSG_0002.npy
+│   ├── ...
+├── Stage
 │   ├── PSG_0001.npy
 │   ├── PSG_0002.npy
 │   ├── ...
@@ -52,7 +78,7 @@ with open(os.path.join(DATASET_DIR, 'split.json'), 'w') as f:
 ### Run training
 
 ```
-python train.py --multirun experiment=psgradar_paper data.dataset.cv_fold=0,1,2,3,4 data.dataset.image_totlen=4800 model.inferer.overlap=0.95
+python train.py --multirun experiment=psgradar_paper data.dataset.cv_fold=0,1,2,3,4
 ```
 
 For different options, look at [`config/experiment/psgradar_paper.yaml`](config/experiment/psgradar_paper.yaml) and [`config/data/dataset/2311_clsHA_2ch_v0.yaml`](config/data/dataset/2311_clsHA_2ch_v0.yaml) for details.
