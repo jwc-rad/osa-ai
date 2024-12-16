@@ -2,8 +2,8 @@
 
 This repository contains the source code of the following paper:
 
-[A novel deep learning model for obstructive sleep apnea diagnosis: hybrid CNN-Transformer approach for radar-based detection of apnea-hypopnea events]()<br>
-<i>UNDER REVIEW</i>
+[A novel deep learning model for obstructive sleep apnea diagnosis: hybrid CNN-Transformer approach for radar-based detection of apnea-hypopnea events](https://academic.oup.com/sleep/article-abstract/47/12/zsae184/7729858)<br>
+<i>Sleep</i> 2024 Dec 11;47(12):zsae184. doi: 10.1093/sleep/zsae184.
 
 ## Installation
 ```shell
@@ -90,6 +90,22 @@ Refer to [`inference.ipynb`](inference.ipynb).
 ## Citation
 
 If you find this repo useful for your work, please consider citing:
+
+    @Article{10.1093/sleep/zsae184,
+        author = {Choi, Jae Won and Koo, Dae Lim and Kim, Dong Hyun and Nam, Hyunwoo and Lee, Ji Hyun and Hong, Seung-No and Kim, Baekhyun},
+        title = {A novel deep learning model for obstructive sleep apnea diagnosis: hybrid CNN-Transformer approach for radar-based detection of apnea-hypopnea events},
+        journal = {Sleep},
+        volume = {47},
+        number = {12},
+        pages = {zsae184},
+        year = {2024},
+        month = {08},
+        issn = {0161-8105},
+        doi = {10.1093/sleep/zsae184},
+        url = {https://doi.org/10.1093/sleep/zsae184},
+        eprint = {https://academic.oup.com/sleep/article-pdf/47/12/zsae184/60774106/zsae184.pdf},
+    }
+
 
 If you find our [preliminary study](https://www.mdpi.com/1424-8220/22/19/7177) useful, please also consider citing:
 
